@@ -54,9 +54,9 @@ else
     {
         [string]$energyReportPath = Join-Path -Path $temporaryFolderPath -ChildPath 'energy-report.html'
         [string]$batteryReportPath = Join-Path -Path $temporaryFolderPath -ChildPath 'battery-report.html'
-        [string]$sleepStudyReportPath = Join-Path -Path $temporaryFolderPath -ChildPath 'sleep-study-report.html'
-        [string]$sleepDiagnosticsReportPath = Join-Path -Path $temporaryFolderPath -ChildPath 'sleep-diagnostics-report.html'
-        [string]$systemPowerReportPath = Join-Path -Path $temporaryFolderPath -ChildPath 'system-power-report.html'
+        [string]$sleepStudyReportPath = Join-Path -Path $temporaryFolderPath -ChildPath 'sleepstudy-report.html'
+        ## [string]$sleepDiagnosticsReportPath = Join-Path -Path $temporaryFolderPath -ChildPath 'sleep-diagnostics-report.html'
+        ## [string]$systemPowerReportPath = Join-Path -Path $temporaryFolderPath -ChildPath 'system-power-report.html'
 
         @('/list',
           '/availablesleepstates',
@@ -66,9 +66,9 @@ else
           '/requests',
           "/energy /output `"$($energyReportPath)`" /duration 10",
           "/batteryreport /output `"$($batteryReportPath)`"",
-          "/sleepstudy /output `"$($sleepStudyReportPath)`"",
-          "/systemsleepdiagnostics /output `"$($sleepDiagnosticsReportPath)`"",
-          "/systempowerreport /output `"$($systemPowerReportPath)`""
+          "/sleepstudy /output `"$($sleepStudyReportPath)`""
+          ## "/systemsleepdiagnostics /output `"$($sleepDiagnosticsReportPath)`"", # Command is deprecated.
+          ## "/systempowerreport /output `"$($systemPowerReportPath)`"" # Generates the same report as /sleepstudy.
          ) |
         ForEach-Object {
             Write-Output "Running PowerCfg $($_)" | Tee-Object -FilePath $logFilePath -Append
