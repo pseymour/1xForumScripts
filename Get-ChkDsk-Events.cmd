@@ -8,7 +8,7 @@ Set-StrictMode -Version 'latest'
 
 $InformationPreference = [Management.Automation.ActionPreference]::Continue
 
-[string]$outputFilePath = (Join-Path ([System.Environment]::GetFolderPath([System.Environment+SpecialFolder]::DesktopDirectory)) "ChkDisk report $(Get-Date -Format 'yyyy-MM-dd_HH-mm-ss').txt")
+[string]$outputFilePath = (Join-Path ([System.Environment]::GetFolderPath([System.Environment+SpecialFolder]::DesktopDirectory)) "ChkDsk report $(Get-Date -Format 'yyyy-MM-dd_HH-mm-ss').txt")
 
 [string]$filterXml = @"
 <QueryList>
@@ -20,6 +20,7 @@ $InformationPreference = [Management.Automation.ActionPreference]::Continue
 "@
 
 Get-WinEvent -FilterXml $filterXml | Sort-Object -Property @('TimeCreated') |
+Sort-Object -Property @('TimeCreated') -Descending |
 Format-List -Property @('ProviderName', 'TimeCreated', 'Message') |
 Out-File -Width 400 -FilePath $outputFilePath
 
@@ -27,5 +28,7 @@ Out-File -Width 400 -FilePath $outputFilePath
 Write-Information "The ChkDsk events have been gathered into a .txt file on your desktop,"
 Write-Information "$($outputFilePath)."
 Write-Information "Please upload the file as an attachment to your post on the forum."
+
+if (Test-Path -Path $outputFilePath) { Start-Process -FilePath $outputFilePath }
 
 pause
